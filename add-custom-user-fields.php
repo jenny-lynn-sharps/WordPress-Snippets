@@ -1,4 +1,5 @@
 <?php
+
 //Add custom user fields to admin User Profile section
 add_action( 'show_user_profile', 'socialmedia_profile_fields' );
 add_action( 'edit_user_profile', 'socialmedia_profile_fields' );
@@ -19,4 +20,20 @@ function socialmedia_profile_fields( $user ) {
         </tr>
      </table>
 
-<?php } ?>
+<?php 
+}
+
+
+//Add action to save user input
+add_action( 'personal_options_update', 'save_socialmedia_profile_fields' );
+add_action( 'edit_user_profile_update', 'save_socialmedia_profile_fields' );
+
+function save_socialmedia_profile_fields( $user_id ) {
+    if ( !current_user_can( 'edit_user', $user_id ) ) {
+        return false;
+    }
+
+    update_usermeta( $user_id, 'googleplus', $_POST['googleplus'] );
+}
+
+?>
